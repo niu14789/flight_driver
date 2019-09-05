@@ -42,6 +42,8 @@ FS_INODE_REGISTER("/runtime.o",runtime,task_heap_init,202);
 FS_SHELL_REGISTER(system_start);
 /* disable all it */
 FS_SHELL_REGISTER(disable_all_it);
+/* task control */
+static unsigned int task_ctrl = 0;
 /* heap init */
 int task_heap_init(void)
 {
@@ -61,7 +63,7 @@ int task_heap_init(void)
 	FS_SHELL_INIT(system_start,system_start,4,_CB_EXE_);
 	FS_SHELL_INIT(disable_all_it,disable_all_it,4,_CB_EXE_);
 	/* heap */
-	
+	task_ctrl = 0;
 	/* add your own code here */
   runtime.i_flags = __FS_IS_INODE_OK|__FS_IS_INODE_INIT;
 	/* ------end of file------ */
@@ -71,8 +73,8 @@ int task_heap_init(void)
 int task_default_config(void)
 {
 	/* psr and period */
-	unsigned short psr[5] = {119,119,119,119,1199};/* 1ms 4ms 10ms 20ms 100ms */
-	unsigned short ped[5] = {999,3999,9999,19999,9999};	
+	unsigned short psr[5] = {119,119,119,119,1199};/* 0.5ms 4ms 10ms 20ms 100ms */
+	unsigned short ped[5] = {499,3999,9999,19999,9999};	
 	unsigned int  timer_base[5] = { TIMER2 , TIMER3 , TIMER4 ,TIMER5 ,TIMER6 };
 	/* timer init */
 	timer_parameter_struct timer_initpara;
@@ -174,7 +176,12 @@ void task2_handler(void)
 	/* clear flag */
   timer_interrupt_flag_clear(TIMER2, TIMER_INT_FLAG_UP);
 	/* about a ms */
-	shell_timer_thread(0);
+	if( task_ctrl ++ % 2 )
+	{
+		shell_timer_thread(0);
+	}
+	/* run 0.5ms task */
+	shell_timer_thread(6);
 	/* end of data */
 }
 void task3_handler(void)

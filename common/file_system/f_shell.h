@@ -31,17 +31,12 @@
 #define _CB_IT_IRQN_(x)        (x) /* 0-65535 */
 #define _IS_CB_PARAM5_(x)     (x&0xffff)
 
-#define TASK_PERIOD0           (1000)   // ms
-#define TASK_PERIOD1           (4000)   // ms
-#define TASK_PERIOD2           (12000)  // ms
-#define TASK_PERIOD3           (335 * 10) // 100ms
-#define TASK_PERIOD4           (335 * 20) // 200msms
-
 #define TASK_PERIOD0_ID           (0xf1)   // ms
 #define TASK_PERIOD1_ID           (0xf2)   // ms
 #define TASK_PERIOD2_ID           (0xf3)  // ms
 #define TASK_PERIOD3_ID           (0xf4) // ms
 #define TASK_PERIOD4_ID           (0xf5) // ms
+#define TASK_PERIOD5_ID           (0xf6) // ms
 
 typedef enum{
 	shell_error = 0,

@@ -28,7 +28,7 @@
 #include "fs_config.h"
 /* steaed */
 static struct shell_cmd * p_shell_link_base = (void*)0;
-static struct shell_cmd * p_timer_link_base[6];
+static struct shell_cmd * p_timer_link_base[7];
 /* export the p_timer_link_base */
 FS_SHELL_REGISTER(p_timer_link_base);
 /* heap init*/
@@ -36,7 +36,7 @@ void fs_runs_init(void)
 {
 	p_shell_link_base = 0;
 	memset(p_timer_link_base,0,sizeof(p_timer_link_base));
-	FS_SHELL_INIT(p_timer_link_base,p_timer_link_base,0x040000+16,_CB_VAR_);
+	FS_SHELL_INIT(p_timer_link_base,p_timer_link_base,0x040000+20,_CB_VAR_);
 }
 /* system shell init */
 int system_shell_init(struct shell_cmd * p_shell_cmd,unsigned int max)
@@ -69,7 +69,12 @@ int system_shell_init(struct shell_cmd * p_shell_cmd,unsigned int max)
 					else if(_IS_CB_PARAM5_(p_shell_cmd->it_type) == TASK_PERIOD4_ID )
 					{
 						 system_shell_insert(&p_timer_link_base[4],p_shell_cmd);
-					}else
+					}
+					else if(_IS_CB_PARAM5_(p_shell_cmd->it_type) == TASK_PERIOD5_ID )
+					{
+						 system_shell_insert(&p_timer_link_base[6],p_shell_cmd);
+					}
+					else
 					{ 
 						/*cannot identify */
 					}						 
